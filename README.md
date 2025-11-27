@@ -50,6 +50,7 @@ Nesta etapa, estaremos executando os seguintes comandos Terraform para criar os 
 
 ```shell
 terraform init
+terraform validate
 terraform plan
 terraform apply
 ```
