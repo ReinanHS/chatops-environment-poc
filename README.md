@@ -24,6 +24,7 @@ Use o seguinte comando para iniciar a autenticação no GCP:
 
 ```shell
 gcloud auth login
+gcloud auth application-default login
 ```
 
 ### Etapa 2: Código no Terraform
