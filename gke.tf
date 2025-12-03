@@ -24,10 +24,13 @@ resource "google_container_cluster" "primary" {
 }
 
 resource "google_container_node_pool" "primary_preemptible_nodes" {
-  name       = "spot-node-pool"
-  location   = var.zone
-  cluster    = google_container_cluster.primary.name
-  node_count = 1
+  name     = "spot-node-pool"
+  location = var.zone
+  cluster  = google_container_cluster.primary.name
+  autoscaling {
+    min_node_count = 1
+    max_node_count = 3
+  }
 
   node_config {
     spot         = true
