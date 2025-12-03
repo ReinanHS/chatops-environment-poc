@@ -111,7 +111,7 @@ resource "helm_release" "grafana" {
   name             = "grafana"
   repository       = "https://grafana.github.io/helm-charts"
   chart            = "grafana"
-  version          = "10.3.0"
+  version          = "7.3.0"
   create_namespace = true
   namespace        = "monitoring"
 
@@ -122,6 +122,26 @@ resource "helm_release" "grafana" {
 
   set {
     name  = "service.type"
-    value = "LoadBalancer"
+    value = "NodePort"
+  }
+
+  set {
+    name  = "ingress.enabled"
+    value = "true"
+  }
+
+  set {
+    name  = "ingress.hosts[0]"
+    value = "grafana.${var.username}.${var.domain}"
+  }
+
+  set {
+    name  = "ingress.annotations.kubernetes\\.io/ingress\\.global-static-ip-name"
+    value = google_compute_global_address.grafana_ip.name
+  }
+
+  set {
+    name  = "ingress.annotations.kubernetes\\.io/ingress\\.class"
+    value = "gce"
   }
 }

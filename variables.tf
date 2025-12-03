@@ -20,3 +20,20 @@ variable "cluster_name" {
   type        = string
   default     = "chatops-lab-cluster"
 }
+
+variable "cloudflare_api_token" {
+  description = "The Cloudflare API Token"
+  type        = string
+  sensitive   = true
+}
+
+variable "username" {
+  description = "The username to be used in the subdomain"
+  type        = string
+}
+
+variable "domain" {
+  description = "The domain name"
+  type        = string
+  default     = "labchatops.online"
+}
