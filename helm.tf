@@ -100,8 +100,28 @@ resource "helm_release" "onlineboutique" {
     name  = "shippingService.resources.requests.cpu"
     value = "30m"
   }
+
   set {
     name  = "shippingService.resources.requests.memory"
     value = "20Mi"
+  }
+}
+
+resource "helm_release" "grafana" {
+  name             = "grafana"
+  repository       = "https://grafana.github.io/helm-charts"
+  chart            = "grafana"
+  version          = "10.3.0"
+  create_namespace = true
+  namespace        = "monitoring"
+
+  set {
+    name  = "adminPassword"
+    value = "admin"
+  }
+
+  set {
+    name  = "service.type"
+    value = "LoadBalancer"
   }
 }
