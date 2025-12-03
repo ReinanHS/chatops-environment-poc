@@ -18,5 +18,5 @@ variable "zone" {
 variable "cluster_name" {
   description = "The name of the GKE cluster"
   type        = string
-  default     = "autopilot-lab-cluster"
+  default     = "chatops-lab-cluster"
 }
