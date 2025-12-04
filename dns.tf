@@ -11,5 +11,5 @@ resource "cloudflare_record" "grafana" {
   name    = "grafana.${var.username}"
   content = google_compute_global_address.grafana_ip.address
   type    = "A"
-  proxied = true
+  proxied = false
 }
