@@ -82,10 +82,30 @@ resource "helm_release" "grafana" {
               options = {
                 path = "/var/lib/grafana/plugins/redis-datasource/dashboards"
               }
+            },
+            {
+              name            = "Prometheus"
+              orgId           = 1
+              folder          = ""
+              type            = "file"
+              disableDeletion = false
+              editable        = false
+              options = {
+                path = "/var/lib/grafana/dashboards/default"
+              }
             }
           ]
         }
       }
+
+      dashboards = {
+        default = {
+          prometheus-stats = {
+            json = file("${path.module}/dashboards/prometheus-stats.json")
+          }
+        }
+      }
+
       datasources = {
         "datasources.yaml" = {
           apiVersion = 1
