@@ -7,6 +7,8 @@ module "cert_manager" {
 
   cloudflare_api_token = var.cloudflare_api_token
   email                = var.email
+
+  depends_on = [google_container_node_pool.primary_preemptible_nodes]
 }
 
 module "monitoring" {
