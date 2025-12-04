@@ -111,7 +111,7 @@ resource "helm_release" "cert_manager" {
   name             = "cert-manager"
   repository       = "https://charts.jetstack.io"
   chart            = "cert-manager"
-  version          = "v1.12.0"
+  version          = "1.19.1"
   create_namespace = true
   namespace        = "cert-manager"
 
@@ -185,7 +185,7 @@ resource "helm_release" "grafana" {
   name             = "grafana"
   repository       = "https://grafana.github.io/helm-charts"
   chart            = "grafana"
-  version          = "7.3.0"
+  version          = "10.3.0"
   create_namespace = true
   namespace        = "monitoring"
 
