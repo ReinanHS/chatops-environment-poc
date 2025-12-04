@@ -1,5 +1,9 @@
 module "onlineboutique" {
   source = "./modules/onlineboutique"
+
+  username         = var.username
+  domain           = var.domain
+  frontend_ip_name = google_compute_global_address.shop_ip.name
 }
 
 module "cert_manager" {
