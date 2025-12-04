@@ -67,6 +67,25 @@ resource "helm_release" "grafana" {
 
   values = [
     yamlencode({
+      plugins = ["redis-datasource"]
+      dashboardProviders = {
+        "dashboardproviders.yaml" = {
+          apiVersion = 1
+          providers = [
+            {
+              name            = "Redis"
+              orgId           = 1
+              folder          = ""
+              type            = "file"
+              disableDeletion = false
+              editable        = true
+              options = {
+                path = "/var/lib/grafana/plugins/redis-datasource/dashboards"
+              }
+            }
+          ]
+        }
+      }
       datasources = {
         "datasources.yaml" = {
           apiVersion = 1
@@ -77,6 +96,15 @@ resource "helm_release" "grafana" {
               url       = "http://prometheus-server.monitoring.svc.cluster.local"
               access    = "proxy"
               isDefault = true
+            },
+            {
+              name   = "Redis"
+              type   = "redis-datasource"
+              url    = "redis://redis-cart.default.svc.cluster.local:6379"
+              access = "proxy"
+              jsonData = {
+                client = "standalone"
+              }
             }
           ]
         }
