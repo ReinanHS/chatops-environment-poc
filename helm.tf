@@ -181,6 +181,20 @@ resource "helm_release" "cluster_issuer" {
   depends_on = [helm_release.cert_manager]
 }
 
+resource "helm_release" "prometheus" {
+  name             = "prometheus"
+  repository       = "https://prometheus-community.github.io/helm-charts"
+  chart            = "prometheus"
+  version          = "27.49.0"
+  create_namespace = true
+  namespace        = "monitoring"
+
+  set {
+    name  = "server.global.scrape_interval"
+    value = "15s"
+  }
+}
+
 resource "helm_release" "grafana" {
   name             = "grafana"
   repository       = "https://grafana.github.io/helm-charts"
@@ -233,6 +247,25 @@ resource "helm_release" "grafana" {
     name  = "ingress.tls[0].secretName"
     value = "grafana-tls"
   }
+
+  values = [
+    yamlencode({
+      datasources = {
+        "datasources.yaml" = {
+          apiVersion = 1
+          datasources = [
+            {
+              name      = "Prometheus"
+              type      = "prometheus"
+              url       = "http://prometheus-server.monitoring.svc.cluster.local"
+              access    = "proxy"
+              isDefault = true
+            }
+          ]
+        }
+      }
+    })
+  ]
 
   depends_on = [helm_release.cluster_issuer]
 }
