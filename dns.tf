@@ -21,3 +21,11 @@ resource "cloudflare_record" "shop" {
   type    = "A"
   proxied = false
 }
+
+resource "cloudflare_record" "headlamp" {
+  zone_id = data.cloudflare_zone.domain.id
+  name    = "headlamp.${var.username}"
+  content = google_compute_global_address.ingress_ip.address
+  type    = "A"
+  proxied = false
+}

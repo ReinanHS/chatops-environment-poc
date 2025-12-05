@@ -45,6 +45,23 @@ resource "kubernetes_ingress_v1" "unified_ingress" {
       }
     }
 
+    rule {
+      host = "headlamp.${var.username}.${var.domain}"
+      http {
+        path {
+          path = "/*"
+          backend {
+            service {
+              name = "headlamp"
+              port {
+                number = 80
+              }
+            }
+          }
+        }
+      }
+    }
+
     tls {
       secret_name = "grafana-tls"
       hosts       = ["grafana.${var.username}.${var.domain}"]
@@ -53,6 +70,11 @@ resource "kubernetes_ingress_v1" "unified_ingress" {
     tls {
       secret_name = "shop-tls"
       hosts       = ["shop.${var.username}.${var.domain}"]
+    }
+
+    tls {
+      secret_name = "headlamp-tls"
+      hosts       = ["headlamp.${var.username}.${var.domain}"]
     }
   }
 }
