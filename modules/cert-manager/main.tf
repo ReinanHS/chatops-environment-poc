@@ -12,7 +12,7 @@ resource "helm_release" "cert_manager" {
   }
 }
 
-resource "kubernetes_secret" "cloudflare_api_token_secret" {
+resource "kubernetes_secret_v1" "cloudflare_api_token_secret" {
   metadata {
     name      = "cloudflare-api-token-secret"
     namespace = "cert-manager"
