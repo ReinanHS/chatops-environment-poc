@@ -44,3 +44,7 @@ resource "google_container_node_pool" "primary_preemptible_nodes" {
     disk_type    = "pd-standard"
   }
 }
+
+resource "google_compute_global_address" "ingress_ip" {
+  name = "ingress-ip"
+}

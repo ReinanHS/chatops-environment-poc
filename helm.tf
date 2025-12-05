@@ -42,3 +42,9 @@ module "headlamp" {
 
   depends_on = [module.cert_manager, google_container_node_pool.primary_preemptible_nodes]
 }
+
+# module "keycloak" {
+#   source = "./modules/keycloak"
+
+#   depends_on = [module.cert_manager, google_container_node_pool.primary_preemptible_nodes]
+# }

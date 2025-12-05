@@ -1,31 +1,35 @@
-resource "google_compute_global_address" "ingress_ip" {
-  name = "ingress-ip"
-}
-
 data "cloudflare_zone" "domain" {
   name = var.domain
 }
 
-resource "cloudflare_record" "grafana" {
+resource "cloudflare_record" "ingress_ip" {
   zone_id = data.cloudflare_zone.domain.id
-  name    = "grafana.${var.username}"
+  name    = "grafana-${var.username}"
   content = google_compute_global_address.ingress_ip.address
   type    = "A"
-  proxied = false
+  proxied = true
 }
 
 resource "cloudflare_record" "shop" {
   zone_id = data.cloudflare_zone.domain.id
-  name    = "shop.${var.username}"
+  name    = "shop-${var.username}"
   content = google_compute_global_address.ingress_ip.address
   type    = "A"
-  proxied = false
+  proxied = true
 }
 
 resource "cloudflare_record" "headlamp" {
   zone_id = data.cloudflare_zone.domain.id
-  name    = "headlamp.${var.username}"
+  name    = "headlamp-${var.username}"
   content = google_compute_global_address.ingress_ip.address
   type    = "A"
-  proxied = false
+  proxied = true
+}
+
+resource "cloudflare_record" "keycloak" {
+  zone_id = data.cloudflare_zone.domain.id
+  name    = "keycloak-${var.username}"
+  content = google_compute_global_address.ingress_ip.address
+  type    = "A"
+  proxied = true
 }

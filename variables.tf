@@ -42,3 +42,8 @@ variable "email" {
   description = "Email address for Let's Encrypt registration"
   type        = string
 }
+
+variable "allowed_ips" {
+  description = "List of allowed IP addresses"
+  type        = list(string)
+}

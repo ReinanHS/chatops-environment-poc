@@ -12,7 +12,7 @@ resource "kubernetes_ingress_v1" "unified_ingress" {
   spec {
 
     rule {
-      host = "grafana.${var.username}.${var.domain}"
+      host = "grafana-${var.username}.${var.domain}"
       http {
         path {
           path = "/*"
@@ -29,7 +29,7 @@ resource "kubernetes_ingress_v1" "unified_ingress" {
     }
 
     rule {
-      host = "shop.${var.username}.${var.domain}"
+      host = "shop-${var.username}.${var.domain}"
       http {
         path {
           path = "/*"
@@ -46,7 +46,7 @@ resource "kubernetes_ingress_v1" "unified_ingress" {
     }
 
     rule {
-      host = "headlamp.${var.username}.${var.domain}"
+      host = "headlamp-${var.username}.${var.domain}"
       http {
         path {
           path = "/*"
@@ -62,19 +62,41 @@ resource "kubernetes_ingress_v1" "unified_ingress" {
       }
     }
 
+    # rule {
+    #   host = "keycloak.${var.username}.${var.domain}"
+    #   http {
+    #     path {
+    #       path = "/*"
+    #       backend {
+    #         service {
+    #           name = "keycloak"
+    #           port {
+    #             number = 80
+    #           }
+    #         }
+    #       }
+    #     }
+    #   }
+    # }
+
     tls {
       secret_name = "grafana-tls"
-      hosts       = ["grafana.${var.username}.${var.domain}"]
+      hosts       = ["grafana-${var.username}.${var.domain}"]
     }
 
     tls {
       secret_name = "shop-tls"
-      hosts       = ["shop.${var.username}.${var.domain}"]
+      hosts       = ["shop-${var.username}.${var.domain}"]
     }
 
     tls {
       secret_name = "headlamp-tls"
-      hosts       = ["headlamp.${var.username}.${var.domain}"]
+      hosts       = ["headlamp-${var.username}.${var.domain}"]
     }
+
+    # tls {
+    #   secret_name = "keycloak-tls"
+    #   hosts       = ["keycloak.${var.username}.${var.domain}"]
+    # }
   }
 }
