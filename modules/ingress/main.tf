@@ -10,14 +10,6 @@ resource "kubernetes_ingress_v1" "unified_ingress" {
   }
 
   spec {
-    default_backend {
-      service {
-        name = "frontend"
-        port {
-          number = 80
-        }
-      }
-    }
 
     rule {
       host = "grafana.${var.username}.${var.domain}"
