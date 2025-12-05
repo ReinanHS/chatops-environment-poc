@@ -110,49 +110,4 @@ resource "helm_release" "onlineboutique" {
   }
 }
 
-resource "kubernetes_ingress_v1" "frontend_ingress" {
-  metadata {
-    name      = "frontend-ingress"
-    namespace = "default"
-    annotations = {
-      "kubernetes.io/ingress.global-static-ip-name" = var.frontend_ip_name
-      "cert-manager.io/cluster-issuer"              = "letsencrypt-prod"
-      "kubernetes.io/ingress.class"                 = "gce"
-    }
-  }
 
-  spec {
-    default_backend {
-      service {
-        name = "frontend"
-        port {
-          number = 80
-        }
-      }
-    }
-
-    rule {
-      host = "shop.${var.username}.${var.domain}"
-      http {
-        path {
-          path = "/*"
-          backend {
-            service {
-              name = "frontend"
-              port {
-                number = 80
-              }
-            }
-          }
-        }
-      }
-    }
-
-    tls {
-      secret_name = "shop-tls"
-      hosts       = ["shop.${var.username}.${var.domain}"]
-    }
-  }
-
-  depends_on = [helm_release.onlineboutique]
-}

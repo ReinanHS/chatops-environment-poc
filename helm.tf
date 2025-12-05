@@ -1,9 +1,8 @@
 module "onlineboutique" {
   source = "./modules/onlineboutique"
 
-  username         = var.username
-  domain           = var.domain
-  frontend_ip_name = google_compute_global_address.shop_ip.name
+  username = var.username
+  domain   = var.domain
 }
 
 module "cert_manager" {
@@ -18,9 +17,21 @@ module "cert_manager" {
 module "monitoring" {
   source = "./modules/monitoring"
 
-  username        = var.username
-  domain          = var.domain
-  grafana_ip_name = google_compute_global_address.grafana_ip.name
+  username = var.username
+  domain   = var.domain
 
   depends_on = [module.cert_manager]
+}
+
+module "ingress" {
+  source = "./modules/ingress"
+
+  username        = var.username
+  domain          = var.domain
+  ingress_ip_name = google_compute_global_address.ingress_ip.name
+
+  depends_on = [
+    module.monitoring,
+    module.onlineboutique
+  ]
 }

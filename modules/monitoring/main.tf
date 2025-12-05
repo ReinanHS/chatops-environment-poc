@@ -3,8 +3,8 @@ resource "helm_release" "grafana_backend_config" {
   repository       = "https://bedag.github.io/helm-charts"
   chart            = "raw"
   version          = "2.0.0"
-  namespace        = "monitoring"
-  create_namespace = true
+  namespace        = "default"
+  create_namespace = false
 
   values = [
     yamlencode({
@@ -14,7 +14,7 @@ resource "helm_release" "grafana_backend_config" {
           kind       = "BackendConfig"
           metadata = {
             name      = "monitoramento-grafana-bc"
-            namespace = "monitoring"
+            namespace = "default"
           }
           spec = {
             healthCheck = {
@@ -38,8 +38,8 @@ resource "helm_release" "kube_prometheus_stack" {
   repository       = "https://prometheus-community.github.io/helm-charts"
   chart            = "kube-prometheus-stack"
   version          = "79.11.0"
-  create_namespace = true
-  namespace        = "monitoring"
+  create_namespace = false
+  namespace        = "default"
 
   depends_on = [
     helm_release.grafana_backend_config
@@ -66,18 +66,7 @@ resource "helm_release" "kube_prometheus_stack" {
         }
 
         ingress = {
-          enabled          = true
-          ingressClassName = "gce"
-          annotations = {
-            "kubernetes.io/ingress.global-static-ip-name" = var.grafana_ip_name
-            "cert-manager.io/cluster-issuer"              = "letsencrypt-prod"
-            "kubernetes.io/ingress.class"                 = "gce"
-          }
-          hosts = ["grafana.${var.username}.${var.domain}"]
-          tls = [{
-            secretName = "grafana-tls"
-            hosts      = ["grafana.${var.username}.${var.domain}"]
-          }]
+          enabled = false
         }
 
         plugins = ["redis-datasource"]
@@ -105,7 +94,7 @@ resource "helm_release" "kube_prometheus_stack" {
           {
             name   = "Redis"
             type   = "redis-datasource"
-            url    = "redis://redis-cart.default.svc.cluster.local:6379"
+            url    = "redis://redis-cart:6379"
             access = "proxy"
             jsonData = {
               client = "standalone"

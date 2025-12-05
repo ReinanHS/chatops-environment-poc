@@ -8,7 +8,4 @@ variable "domain" {
   type        = string
 }
 
-variable "frontend_ip_name" {
-  description = "The name of the global static IP for the frontend"
-  type        = string
-}
+

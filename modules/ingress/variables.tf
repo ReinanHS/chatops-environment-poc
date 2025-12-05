@@ -8,4 +8,7 @@ variable "domain" {
   type        = string
 }
 
-
+variable "ingress_ip_name" {
+  description = "The name of the global static IP for the ingress"
+  type        = string
+}
