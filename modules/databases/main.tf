@@ -83,7 +83,7 @@ resource "helm_release" "postgres" {
   version          = "0.12.4"
 
   set {
-    name  = "initdbScriptsConfigMap"
+    name  = "initdb.scriptsConfigMap"
     value = kubernetes_config_map_v1.postgres_init.metadata[0].name
   }
 
