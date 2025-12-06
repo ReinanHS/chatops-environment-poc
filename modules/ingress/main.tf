@@ -113,6 +113,23 @@ resource "kubernetes_ingress_v1" "unified_ingress" {
       }
     }
 
+    rule {
+      host = "phpmyadmin-${var.username}.${var.domain}"
+      http {
+        path {
+          path = "/*"
+          backend {
+            service {
+              name = "phpmyadmin"
+              port {
+                number = 80
+              }
+            }
+          }
+        }
+      }
+    }
+
     tls {
       secret_name = "grafana-tls"
       hosts       = ["grafana-${var.username}.${var.domain}"]
@@ -138,9 +155,9 @@ resource "kubernetes_ingress_v1" "unified_ingress" {
       hosts       = ["status-${var.username}.${var.domain}"]
     }
 
-    # tls {
-    #   secret_name = "keycloak-tls"
-    #   hosts       = ["keycloak.${var.username}.${var.domain}"]
-    # }
+    tls {
+      secret_name = "phpmyadmin-tls"
+      hosts       = ["phpmyadmin-${var.username}.${var.domain}"]
+    }
   }
 }

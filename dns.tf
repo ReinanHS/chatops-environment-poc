@@ -49,3 +49,11 @@ resource "cloudflare_record" "uptime-kuma" {
   type    = "A"
   proxied = true
 }
+
+resource "cloudflare_record" "phpmyadmin" {
+  zone_id = data.cloudflare_zone.domain.id
+  name    = "phpmyadmin-${var.username}"
+  content = google_compute_global_address.ingress_ip.address
+  type    = "A"
+  proxied = true
+}

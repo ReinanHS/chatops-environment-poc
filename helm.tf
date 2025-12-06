@@ -17,6 +17,9 @@ module "cert_manager" {
 module "databases" {
   source = "./modules/databases"
 
+  username = var.username
+  domain   = var.domain
+
   mariadb_database      = var.mariadb_database
   mariadb_user          = var.mariadb_user
   mariadb_user_password = var.mariadb_user_password

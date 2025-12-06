@@ -50,3 +50,26 @@ resource "helm_release" "postgres" {
     value = var.postgres_user_password
   }
 }
+
+resource "helm_release" "phpmyadmin" {
+  name             = "phpmyadmin"
+  repository       = "https://charts.alekc.dev"
+  chart            = "phpmyadmin"
+  namespace        = "default"
+  create_namespace = false
+  version          = "0.2.2"
+
+  depends_on = [
+    helm_release.mariadb
+  ]
+
+  set {
+    name  = "config.PMA_HOSTS"
+    value = "mariadb.databases.svc.cluster.local"
+  }
+
+  set {
+    name  = "config.PMA_ABSOLUTE_URI"
+    value = "https://phpmyadmin-${var.username}.${var.domain}/"
+  }
+}

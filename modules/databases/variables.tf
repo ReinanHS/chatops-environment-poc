@@ -39,3 +39,13 @@ variable "postgres_user_password" {
   type        = string
   default     = "mypassword"
 }
+
+variable "username" {
+  description = "The username to be used in the subdomain"
+  type        = string
+}
+
+variable "domain" {
+  description = "The domain name"
+  type        = string
+}
