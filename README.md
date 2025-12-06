@@ -61,6 +61,12 @@ terraform apply
 
 Após a execução bem-sucedida do código Terraform, você pode verificar os recursos criados no GCP.
 
+Para obter o token do Headlamp, execute o seguinte comando:
+
+```shell
+kubectl get secret headlamp-admin-token -n default -o go-template='{{.data.token | base64decode}}'
+```
+
 ### Etapa 6: Limpar recursos de demonstração
 
 Quando você terminar seus experimentos e quiser limpar os recursos implantados, você pode executar o seguinte comando Terraform:
