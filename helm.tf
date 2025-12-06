@@ -48,3 +48,7 @@ module "headlamp" {
 
 #   depends_on = [module.cert_manager, google_container_node_pool.primary_preemptible_nodes]
 # }
+
+module "databases" {
+  source = "./modules/databases"
+}

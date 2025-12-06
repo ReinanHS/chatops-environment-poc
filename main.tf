@@ -18,6 +18,12 @@ provider "helm" {
     token                  = data.google_client_config.default.access_token
     cluster_ca_certificate = base64decode(google_container_cluster.primary.master_auth[0].cluster_ca_certificate)
   }
+
+  registry {
+    url      = "oci://registry-1.docker.io"
+    username = var.docker_username
+    password = var.docker_password
+  }
 }
 
 provider "cloudflare" {

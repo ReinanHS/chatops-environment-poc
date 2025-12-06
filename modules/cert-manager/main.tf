@@ -68,5 +68,5 @@ resource "helm_release" "cluster_issuer" {
     })
   ]
 
-  depends_on = [helm_release.cert_manager]
+  depends_on = [helm_release.cert_manager, kubernetes_secret_v1.cloudflare_api_token_secret]
 }

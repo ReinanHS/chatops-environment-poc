@@ -46,4 +46,17 @@ variable "email" {
 variable "allowed_ips" {
   description = "List of allowed IP addresses"
   type        = list(string)
+  default     = []
+}
+
+variable "docker_username" {
+  description = "Docker Hub username for OCI registry auth"
+  type        = string
+  sensitive   = true
+}
+
+variable "docker_password" {
+  description = "Docker Hub password for OCI registry auth"
+  type        = string
+  sensitive   = true
 }
