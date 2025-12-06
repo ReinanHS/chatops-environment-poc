@@ -49,3 +49,11 @@ resource "cloudflare_record" "phpmyadmin" {
   type    = "A"
   proxied = true
 }
+
+resource "cloudflare_record" "n8n" {
+  zone_id = data.cloudflare_zone.domain.id
+  name    = "n8n-${var.username}"
+  content = google_compute_global_address.ingress_ip.address
+  type    = "A"
+  proxied = true
+}

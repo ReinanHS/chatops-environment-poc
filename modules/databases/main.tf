@@ -25,6 +25,21 @@ resource "kubernetes_config_map_v1" "mariadb_init" {
   }
 }
 
+resource "kubernetes_config_map_v1" "postgres_init" {
+  metadata {
+    name      = "postgres-init-scripts"
+    namespace = kubernetes_namespace_v1.databases.metadata[0].name
+  }
+
+  data = {
+    "01-init-n8n.sql" = <<-EOF
+      CREATE USER n8n WITH PASSWORD 'n8n-password';
+      CREATE DATABASE n8n;
+      GRANT ALL PRIVILEGES ON DATABASE n8n TO n8n;
+    EOF
+  }
+}
+
 resource "helm_release" "mariadb" {
   name             = "mariadb"
   repository       = "oci://registry-1.docker.io/cloudpirates"
@@ -66,6 +81,11 @@ resource "helm_release" "postgres" {
   namespace        = kubernetes_namespace_v1.databases.metadata[0].name
   create_namespace = false
   version          = "0.12.4"
+
+  set {
+    name  = "initdbScriptsConfigMap"
+    value = kubernetes_config_map_v1.postgres_init.metadata[0].name
+  }
 
   set {
     name  = "auth.database"

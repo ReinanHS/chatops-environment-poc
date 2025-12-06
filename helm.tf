@@ -59,3 +59,21 @@ module "headlamp" {
 
   depends_on = [module.cert_manager, google_container_node_pool.primary_preemptible_nodes]
 }
+
+module "n8n" {
+  source = "./modules/n8n"
+
+  username = var.username
+  domain   = var.domain
+
+  postgres_host     = "postgres.databases.svc.cluster.local"
+  postgres_port     = 5432
+  postgres_database = "n8n"
+  postgres_user     = "n8n"
+  postgres_password = "n8n-password"
+
+  redis_host = "redis-cart.default.svc.cluster.local"
+  redis_port = 6379
+
+  depends_on = [module.cert_manager, module.databases, module.onlineboutique]
+}

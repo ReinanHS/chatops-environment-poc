@@ -142,5 +142,27 @@ resource "kubernetes_ingress_v1" "unified_ingress" {
       secret_name = "phpmyadmin-tls"
       hosts       = ["phpmyadmin-${var.username}.${var.domain}"]
     }
+
+    rule {
+      host = "n8n-${var.username}.${var.domain}"
+      http {
+        path {
+          path = "/*"
+          backend {
+            service {
+              name = "n8n"
+              port {
+                number = 5678
+              }
+            }
+          }
+        }
+      }
+    }
+
+    tls {
+      secret_name = "n8n-tls"
+      hosts       = ["n8n-${var.username}.${var.domain}"]
+    }
   }
 }
