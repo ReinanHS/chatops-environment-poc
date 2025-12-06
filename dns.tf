@@ -26,14 +26,6 @@ resource "cloudflare_record" "headlamp" {
   proxied = true
 }
 
-resource "cloudflare_record" "keycloak" {
-  zone_id = data.cloudflare_zone.domain.id
-  name    = "keycloak-${var.username}"
-  content = google_compute_global_address.ingress_ip.address
-  type    = "A"
-  proxied = true
-}
-
 resource "cloudflare_record" "status" {
   zone_id = data.cloudflare_zone.domain.id
   name    = "status-${var.username}"

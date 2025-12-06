@@ -62,23 +62,6 @@ resource "kubernetes_ingress_v1" "unified_ingress" {
       }
     }
 
-    # rule {
-    #   host = "keycloak.${var.username}.${var.domain}"
-    #   http {
-    #     path {
-    #       path = "/*"
-    #       backend {
-    #         service {
-    #           name = "keycloak"
-    #           port {
-    #             number = 80
-    #           }
-    #         }
-    #       }
-    #     }
-    #   }
-    # }
-
     rule {
       host = "status-${var.username}.${var.domain}"
       http {
