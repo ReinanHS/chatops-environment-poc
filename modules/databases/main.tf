@@ -26,3 +26,27 @@ resource "helm_release" "mariadb" {
     value = var.mariadb_user_password
   }
 }
+
+resource "helm_release" "postgres" {
+  name             = "postgres"
+  repository       = "oci://registry-1.docker.io/cloudpirates"
+  chart            = "postgres"
+  namespace        = "databases"
+  create_namespace = true
+  version          = "0.12.4"
+
+  set {
+    name  = "auth.database"
+    value = var.postgres_database
+  }
+
+  set {
+    name  = "auth.username"
+    value = var.postgres_user
+  }
+
+  set {
+    name  = "auth.password"
+    value = var.postgres_user_password
+  }
+}

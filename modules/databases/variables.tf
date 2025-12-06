@@ -21,3 +21,21 @@ variable "mariadb_user_password" {
   type        = string
   default     = "mypassword"
 }
+
+variable "postgres_database" {
+  description = "Name of the database to create"
+  type        = string
+  default     = "mydatabase"
+}
+
+variable "postgres_user" {
+  description = "Username for the new user"
+  type        = string
+  default     = "myuser"
+}
+
+variable "postgres_user_password" {
+  description = "Password for the new user"
+  type        = string
+  default     = "mypassword"
+}
