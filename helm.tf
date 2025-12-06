@@ -14,13 +14,17 @@ module "cert_manager" {
   depends_on = [google_container_node_pool.primary_preemptible_nodes]
 }
 
+module "databases" {
+  source = "./modules/databases"
+}
+
 module "monitoring" {
   source = "./modules/monitoring"
 
   username = var.username
   domain   = var.domain
 
-  depends_on = [module.cert_manager]
+  depends_on = [module.cert_manager, module.databases]
 }
 
 module "ingress" {
@@ -41,14 +45,4 @@ module "headlamp" {
   source = "./modules/headlamp"
 
   depends_on = [module.cert_manager, google_container_node_pool.primary_preemptible_nodes]
-}
-
-# module "keycloak" {
-#   source = "./modules/keycloak"
-
-#   depends_on = [module.cert_manager, google_container_node_pool.primary_preemptible_nodes]
-# }
-
-module "databases" {
-  source = "./modules/databases"
 }
