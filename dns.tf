@@ -57,3 +57,11 @@ resource "cloudflare_record" "n8n" {
   type    = "A"
   proxied = true
 }
+
+resource "cloudflare_record" "gitlab" {
+  zone_id = data.cloudflare_zone.domain.id
+  name    = "gitlab-${var.username}"
+  content = google_compute_global_address.ingress_ip.address
+  type    = "A"
+  proxied = true
+}

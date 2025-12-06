@@ -67,6 +67,12 @@ Para obter o token do Headlamp, execute o seguinte comando:
 kubectl get secret headlamp-admin-token -n default -o go-template='{{.data.token | base64decode}}'
 ```
 
+Para obter a senha do usuário root do GitLab, execute o seguinte comando:
+
+```shell
+kubectl get secret gitlab-gitlab-initial-root-password -o go-template='{{.data.password | base64decode}}'
+```
+
 ### Etapa 6: Limpar recursos de demonstração
 
 Quando você terminar seus experimentos e quiser limpar os recursos implantados, você pode executar o seguinte comando Terraform:

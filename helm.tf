@@ -77,3 +77,12 @@ module "n8n" {
 
   depends_on = [module.cert_manager, module.databases, module.onlineboutique]
 }
+
+module "gitlab" {
+  source = "./modules/gitlab"
+
+  username = var.username
+  domain   = var.domain
+
+  depends_on = [module.ingress] # Ingress should be ready or at least started, though strictly it just needs the class
+}

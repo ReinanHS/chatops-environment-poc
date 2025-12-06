@@ -164,5 +164,27 @@ resource "kubernetes_ingress_v1" "unified_ingress" {
       secret_name = "n8n-tls"
       hosts       = ["n8n-${var.username}.${var.domain}"]
     }
+
+    rule {
+      host = "gitlab-${var.username}.${var.domain}"
+      http {
+        path {
+          path = "/*"
+          backend {
+            service {
+              name = "gitlab-webservice-default"
+              port {
+                number = 8181
+              }
+            }
+          }
+        }
+      }
+    }
+
+    tls {
+      secret_name = "gitlab-tls"
+      hosts       = ["gitlab-${var.username}.${var.domain}"]
+    }
   }
 }
