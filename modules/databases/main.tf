@@ -12,10 +12,7 @@ resource "kubernetes_config_map_v1" "mariadb_init" {
 
   data = {
     "01-init-extra.sql" = <<-EOF
-      CREATE DATABASE IF NOT EXISTS keycloak;
-      CREATE USER IF NOT EXISTS 'keycloak'@'%' IDENTIFIED BY 'keycloak-password';
-      GRANT ALL PRIVILEGES ON keycloak.* TO 'keycloak'@'%';
-
+    
       CREATE DATABASE IF NOT EXISTS uptime_kuma;
       CREATE USER IF NOT EXISTS 'uptime_kuma'@'%' IDENTIFIED BY 'uptime-kuma-password';
       GRANT ALL PRIVILEGES ON uptime_kuma.* TO 'uptime_kuma'@'%';
@@ -36,6 +33,8 @@ resource "kubernetes_config_map_v1" "postgres_init" {
       CREATE USER n8n WITH PASSWORD 'n8n-password';
       CREATE DATABASE n8n;
       GRANT ALL PRIVILEGES ON DATABASE n8n TO n8n;
+      \c n8n
+      GRANT ALL ON SCHEMA public TO n8n;
     EOF
   }
 }
