@@ -60,3 +60,21 @@ variable "docker_password" {
   type        = string
   sensitive   = true
 }
+
+variable "mariadb_database" {
+  description = "Name of the MariaDB database"
+  type        = string
+  default     = "mydatabase"
+}
+
+variable "mariadb_user" {
+  description = "Username for MariaDB"
+  type        = string
+  default     = "myuser"
+}
+
+variable "mariadb_user_password" {
+  description = "Password for MariaDB user"
+  type        = string
+  default     = "mypassword"
+}

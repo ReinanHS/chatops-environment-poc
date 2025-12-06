@@ -16,6 +16,10 @@ module "cert_manager" {
 
 module "databases" {
   source = "./modules/databases"
+
+  mariadb_database      = var.mariadb_database
+  mariadb_user          = var.mariadb_user
+  mariadb_user_password = var.mariadb_user_password
 }
 
 module "monitoring" {
@@ -23,6 +27,12 @@ module "monitoring" {
 
   username = var.username
   domain   = var.domain
+
+  mariadb_host          = "mariadb.databases.svc.cluster.local"
+  mariadb_port          = 3306
+  mariadb_database      = var.mariadb_database
+  mariadb_user          = var.mariadb_user
+  mariadb_user_password = var.mariadb_user_password
 
   depends_on = [module.cert_manager, module.databases]
 }

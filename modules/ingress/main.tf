@@ -79,6 +79,40 @@ resource "kubernetes_ingress_v1" "unified_ingress" {
     #   }
     # }
 
+    rule {
+      host = "status-${var.username}.${var.domain}"
+      http {
+        path {
+          path = "/*"
+          backend {
+            service {
+              name = "uptime-kuma"
+              port {
+                number = 3001
+              }
+            }
+          }
+        }
+      }
+    }
+
+    rule {
+      host = "uptime-kuma-${var.username}.${var.domain}"
+      http {
+        path {
+          path = "/*"
+          backend {
+            service {
+              name = "uptime-kuma"
+              port {
+                number = 3001
+              }
+            }
+          }
+        }
+      }
+    }
+
     tls {
       secret_name = "grafana-tls"
       hosts       = ["grafana-${var.username}.${var.domain}"]
@@ -92,6 +126,16 @@ resource "kubernetes_ingress_v1" "unified_ingress" {
     tls {
       secret_name = "headlamp-tls"
       hosts       = ["headlamp-${var.username}.${var.domain}"]
+    }
+
+    tls {
+      secret_name = "uptime-kuma-tls"
+      hosts       = ["uptime-kuma-${var.username}.${var.domain}"]
+    }
+
+    tls {
+      secret_name = "status-tls"
+      hosts       = ["status-${var.username}.${var.domain}"]
     }
 
     # tls {

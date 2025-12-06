@@ -33,3 +33,19 @@ resource "cloudflare_record" "keycloak" {
   type    = "A"
   proxied = true
 }
+
+resource "cloudflare_record" "status" {
+  zone_id = data.cloudflare_zone.domain.id
+  name    = "status-${var.username}"
+  content = google_compute_global_address.ingress_ip.address
+  type    = "A"
+  proxied = true
+}
+
+resource "cloudflare_record" "uptime-kuma" {
+  zone_id = data.cloudflare_zone.domain.id
+  name    = "uptime-kuma-${var.username}"
+  content = google_compute_global_address.ingress_ip.address
+  type    = "A"
+  proxied = true
+}

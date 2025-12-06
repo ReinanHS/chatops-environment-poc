@@ -105,3 +105,71 @@ resource "helm_release" "kube_prometheus_stack" {
     })
   ]
 }
+
+resource "helm_release" "uptime_kuma_backend_config" {
+  name             = "uptime-kuma-backend-config"
+  repository       = "https://bedag.github.io/helm-charts"
+  chart            = "raw"
+  version          = "2.0.0"
+  namespace        = "default"
+  create_namespace = false
+
+  values = [
+    yamlencode({
+      resources = [
+        {
+          apiVersion = "cloud.google.com/v1"
+          kind       = "BackendConfig"
+          metadata = {
+            name      = "uptime-kuma-bc"
+            namespace = "default"
+          }
+          spec = {
+            healthCheck = {
+              checkIntervalSec   = 15
+              timeoutSec         = 15
+              healthyThreshold   = 1
+              unhealthyThreshold = 2
+              type               = "HTTP"
+              requestPath        = "/dashboard"
+              port               = 3001
+            }
+          }
+        }
+      ]
+    })
+  ]
+}
+
+resource "helm_release" "uptime-kuma" {
+  name             = "uptime-kuma"
+  repository       = "https://dirsigler.github.io/uptime-kuma-helm"
+  chart            = "uptime-kuma"
+  version          = "2.24.0"
+  create_namespace = false
+  namespace        = "default"
+
+  depends_on = [
+    helm_release.uptime_kuma_backend_config
+  ]
+
+  values = [
+    yamlencode({
+      service = {
+        type = "NodePort"
+        port = 3001
+        annotations = {
+          "cloud.google.com/backend-config" = "{\"default\": \"uptime-kuma-bc\"}"
+        }
+      }
+      externalDatabase = {
+        enabled  = true
+        host     = var.mariadb_host
+        port     = var.mariadb_port
+        database = var.mariadb_database
+        user     = var.mariadb_user
+        password = var.mariadb_user_password
+      }
+    })
+  ]
+}
